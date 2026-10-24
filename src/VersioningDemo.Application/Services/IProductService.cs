@@ -1,6 +1,7 @@
+using VersioningDemo.Application.DTOs;
 using VersioningDemo.Domain.Entities;
 
-namespace VersioningDemo.Application.Products;
+namespace VersioningDemo.Application.Services;
 
 /// <summary>
 /// Shared by ALL API versions. Versions differ only in the Contract (DTOs),
