@@ -1,4 +1,4 @@
-namespace VersioningDemo.Application.Products;
+namespace VersioningDemo.Application.DTOs;
 
 /// <summary>Flat read DTO returned by the paginated GET endpoint.</summary>
 public record ProductDto(int Id, string Name, decimal Price, string CategoryName, byte[] RowVersion);

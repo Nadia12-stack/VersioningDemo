@@ -1,6 +1,8 @@
+using VersioningDemo.Application.Common.Interfaces;
+using VersioningDemo.Application.DTOs;
 using VersioningDemo.Domain.Entities;
 
-namespace VersioningDemo.Application.Products;
+namespace VersioningDemo.Application.Services;
 
 public sealed class ProductService(IProductRepository repository) : IProductService
 {

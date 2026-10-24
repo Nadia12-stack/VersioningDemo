@@ -12,5 +12,5 @@ public class Product
     public bool IsDeleted { get; set; }           // Soft Delete
 
     [Timestamp]
-    public byte[] RowVersion { get; set; } = [];  // Concurrency Token
+    public byte[] RowVersion { get; set; } = [];  
 }
