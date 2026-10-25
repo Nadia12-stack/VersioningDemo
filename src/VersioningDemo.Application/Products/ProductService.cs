@@ -1,12 +1,29 @@
+using Microsoft.Extensions.Logging;
 using VersioningDemo.Domain.Entities;
 
 namespace VersioningDemo.Application.Products;
 
-public sealed class ProductService(IProductRepository repository) : IProductService
+public sealed class ProductService(IProductRepository repository, ILogger<ProductService> logger) : IProductService
 {
-    public Task<IReadOnlyList<Product>> GetAllAsync(CancellationToken cancellationToken)
-        => repository.GetAllAsync(cancellationToken);
+    public async Task<IReadOnlyList<Product>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        logger.LogDebug("Fetching all products");
 
-    public Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken)
-        => repository.GetByIdAsync(id, cancellationToken);
+        var products = await repository.GetAllAsync(cancellationToken);
+
+        logger.LogInformation("Fetched {Count} products", products.Count);
+        return products;
+    }
+
+    public async Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        logger.LogDebug("Fetching product {ProductId}", id);
+
+        var product = await repository.GetByIdAsync(id, cancellationToken);
+
+        if (product is null)
+            logger.LogWarning("Product {ProductId} not found", id);
+
+        return product;
+    }
 }
