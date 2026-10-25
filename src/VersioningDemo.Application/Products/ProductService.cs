@@ -1,9 +1,11 @@
 using Microsoft.Extensions.Logging;
+using VersioningDemo.Application.Common.Interfaces;
+using VersioningDemo.Application.Services;
 using VersioningDemo.Domain.Entities;
 
 namespace VersioningDemo.Application.Products;
 
-public sealed class ProductService(IProductRepository repository, ILogger<ProductService> logger) : IProductService
+public sealed class ProductService(IProductRepository repository, ILogger<ProductService> logger) 
 {
     public async Task<IReadOnlyList<Product>> GetAllAsync(CancellationToken cancellationToken)
     {
