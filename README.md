@@ -134,6 +134,18 @@ Integration tests (`WebApplicationFactory`) lock the contract of each version:
 v1 has no `categoryName`, v2 does, unknown products return 404 in both,
 unsupported versions fail, and v1 is reported as deprecated.
 
+## Logging
+
+Logging uses `ILogger<T>` everywhere (controllers, services) and **Serilog** as the provider.
+
+- Configured from `appsettings.json` (`Serilog` section); `appsettings.Development.json` lowers the level to `Debug` and shows EF SQL commands.
+- Sinks: Console + daily rolling file `logs/log-.txt` (last 7 files kept).
+- `UseSerilogRequestLogging()` writes one line per HTTP request (method, path, status, duration).
+- Structured messages (`"Product {ProductId} not found"`), never string interpolation.
+- Unhandled exceptions are logged once, in `GlobalExceptionHandler`, with the full exception and stack trace.
+- Never log passwords, tokens, card data or unnecessary personal data.
+- In Docker/production prefer Console (stdout) collected by the platform or a central system (Seq, ELK, Application Insights); local files are lost when a container is replaced.
+
 ## Docker
 
 ```bash
