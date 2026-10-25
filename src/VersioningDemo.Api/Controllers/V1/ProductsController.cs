@@ -1,7 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using VersioningDemo.Api.Contracts.V1;
-using VersioningDemo.Application.Products;
+using VersioningDemo.Application.Services;
 
 namespace VersioningDemo.Api.Controllers.V1;
 
