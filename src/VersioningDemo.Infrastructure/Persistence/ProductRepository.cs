@@ -43,7 +43,7 @@ public sealed class ProductRepository : Repository<Product>, IProductRepository
     public async Task<(IReadOnlyList<ProductDto> Items, int TotalCount)> GetPagedAsync(
         int pageNumber, int pageSize, string? search, CancellationToken ct)
     {
-        var query = db.Products.AsNoTracking();
+        var query = _db.Products.AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(search))
             query = query.Where(p => p.Name.StartsWith(search));
@@ -62,7 +62,7 @@ public sealed class ProductRepository : Repository<Product>, IProductRepository
 
     /// <summary>Single-row projection by ID. Returns null when not found or soft-deleted.</summary>
     public Task<ProductDto?> GetByIdDtoAsync(int id, CancellationToken ct)
-        => db.Products.AsNoTracking()
+        => _db.Products.AsNoTracking()
             .Where(p => p.Id == id)
             .Select(p => new ProductDto(p.Id, p.Name, p.Price, p.Category.Name, p.RowVersion))
             .FirstOrDefaultAsync(ct);
@@ -78,13 +78,13 @@ public sealed class ProductRepository : Repository<Product>, IProductRepository
     /// </summary>
     public async Task<UpdateResult> UpdateAsync(int id, UpdateProductDto dto, CancellationToken ct)
     {
-        var product = await db.Products.FirstOrDefaultAsync(p => p.Id == id, ct);
+        var product = await _db.Products.FirstOrDefaultAsync(p => p.Id == id, ct);
         if (product is null) return UpdateResult.NotFound;
 
         product.Name  = dto.Name;
         product.Price = dto.Price;
 
-        db.Entry(product).Property(p => p.RowVersion).OriginalValue = dto.RowVersion;
+        _db.Entry(product).Property(p => p.RowVersion).OriginalValue = dto.RowVersion;
 
         try
         {
@@ -105,7 +105,7 @@ public sealed class ProductRepository : Repository<Product>, IProductRepository
     /// </summary>
     public async Task<bool> DeleteAsync(int id, CancellationToken ct)
     {
-        var product = await db.Products.FirstOrDefaultAsync(p => p.Id == id, ct);
+        var product = await _db.Products.FirstOrDefaultAsync(p => p.Id == id, ct);
         if (product is null) return false;
 
         product.IsDeleted = true;

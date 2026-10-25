@@ -35,7 +35,8 @@ try
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
     builder.Services.AddApplication();
-    builder.Services.AddInfrastructure();
+  builder.Services.AddInfrastructure(builder.Configuration);
+  
 
     builder.Services
         .AddApiVersioning(options =>
